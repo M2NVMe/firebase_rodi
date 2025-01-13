@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:689196520124:android:2ee21099f3490241a4b6b9",
+        "android_client_info": {
+          "package_name": "com.example.firebase_rodi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzUGpk4Suh0ZjXNNK7YCCikBOwNzOrlVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:689196520124:android:a36e2c562d157176a4b6b9",
         "android_client_info": {
           "package_name": "com.flutterfirebase.app"
@@ -21,8 +40,7 @@
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": []
-        }
-      }
+        }      }
     }
   ],
   "configuration_version": "1"
