@@ -1,9 +1,8 @@
 import 'package:firebase_rodi/Controllers/CRUDModel/CRUDController.dart';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CRUDutama extends StatelessWidget {
-
   final Crudcontroller controller = Get.put(Crudcontroller());
 
   @override
