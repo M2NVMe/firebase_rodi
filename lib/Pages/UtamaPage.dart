@@ -1,7 +1,7 @@
-import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_rodi/Controllers/CRUDModel/CRUDController.dart';
 import 'package:firebase_rodi/Routes/Route.dart';
+import 'package:firebase_rodi/Widgets/adapter_notes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,15 +33,12 @@ class CrudScreen extends StatelessWidget {
           itemCount: crudController.tasks.length,
           itemBuilder: (context, index) {
             final task = crudController.tasks[index];
-            return ListTile(
-              title: Text(task['title']),
-              subtitle: Text(task['description']),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  crudController.deleteTask(task['id']);
-                },
-              ),
+            return AdapterNotes(
+              task: task,
+              onPressed: () async {
+                await crudController.deleteTask(task['id']);
+                print("Task deleted successfully!");
+              },
             );
           },
         );
@@ -65,9 +62,10 @@ class CrudScreen extends StatelessWidget {
 }
 
 class TaskForm extends StatefulWidget {
-  final Function(String title, String description, DateTime dueDateTime) onSubmit;
+  final Function(String title, String description, DateTime dueDateTime)
+      onSubmit;
 
-  const TaskForm({required this.onSubmit, Key? key}) : super(key: key);
+  const TaskForm({required this.onSubmit, super.key});
 
   @override
   State<TaskForm> createState() => _TaskFormState();
@@ -76,13 +74,15 @@ class TaskForm extends StatefulWidget {
 class _TaskFormState extends State<TaskForm> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController dueDateController = TextEditingController();
+  final TextEditingController dueTimeController = TextEditingController();
   DateTime? selectedDateTime;
 
   void _pickDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDateTime ?? DateTime.now(),
-      firstDate: DateTime(2000),
+      firstDate: DateTime.now(), // Prevent past date selection
       lastDate: DateTime(2101),
     );
 
@@ -98,6 +98,10 @@ class _TaskFormState extends State<TaskForm> {
           selectedDateTime!.minute,
         );
       }
+
+      // Update the Due Date TextField
+      dueDateController.text =
+          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
       setState(() {});
     }
   }
@@ -105,9 +109,7 @@ class _TaskFormState extends State<TaskForm> {
   void _pickTime(BuildContext context) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
-      initialTime: selectedDateTime != null
-          ? TimeOfDay.fromDateTime(selectedDateTime!)
-          : TimeOfDay.now(),
+      initialTime: TimeOfDay.now(), // Prevent past time selection
     );
 
     if (pickedTime != null) {
@@ -119,6 +121,10 @@ class _TaskFormState extends State<TaskForm> {
         pickedTime.hour,
         pickedTime.minute,
       );
+
+      // Update the Due Time TextField
+      dueTimeController.text =
+          "${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}";
       setState(() {});
     }
   }
@@ -139,11 +145,10 @@ class _TaskFormState extends State<TaskForm> {
           onTap: () => _pickDate(context),
           child: AbsorbPointer(
             child: TextField(
-              decoration: InputDecoration(
+              controller: dueDateController,
+              decoration: const InputDecoration(
                 labelText: "Due Date",
-                hintText: selectedDateTime != null
-                    ? "${selectedDateTime!.year}-${selectedDateTime!.month.toString().padLeft(2, '0')}-${selectedDateTime!.day.toString().padLeft(2, '0')}"
-                    : "Pick a date",
+                hintText: "Pick a date",
               ),
             ),
           ),
@@ -152,28 +157,36 @@ class _TaskFormState extends State<TaskForm> {
           onTap: () => _pickTime(context),
           child: AbsorbPointer(
             child: TextField(
-              decoration: InputDecoration(
+              controller: dueTimeController,
+              decoration: const InputDecoration(
                 labelText: "Due Time",
-                hintText: selectedDateTime != null
-                    ? "${selectedDateTime!.hour.toString().padLeft(2, '0')}:${selectedDateTime!.minute.toString().padLeft(2, '0')}"
-                    : "Pick a time",
+                hintText: "Pick a time",
               ),
             ),
           ),
         ),
         ElevatedButton(
           onPressed: () {
-            if (selectedDateTime != null) {
-              widget.onSubmit(
-                titleController.text.trim(),
-                descriptionController.text.trim(),
-                selectedDateTime!,
-              );
-            } else {
+            if (selectedDateTime == null) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Please select a due date and time")),
+                const SnackBar(
+                    content: Text("Please select a due date and time")),
               );
+              return;
             }
+
+            if (selectedDateTime!.isBefore(DateTime.now())) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Due date cannot be in the past")),
+              );
+              return;
+            }
+
+            widget.onSubmit(
+              titleController.text.trim(),
+              descriptionController.text.trim(),
+              selectedDateTime!,
+            );
           },
           child: const Text("Submit"),
         ),
