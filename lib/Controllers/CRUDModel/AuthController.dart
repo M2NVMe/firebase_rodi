@@ -28,6 +28,7 @@ class AuthController extends GetxController {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
       Get.snackbar("Success", "Logged in successfully!");
+      print(firebaseUser);
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }

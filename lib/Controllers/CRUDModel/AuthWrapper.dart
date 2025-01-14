@@ -1,4 +1,5 @@
 
+import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'AuthController.dart';
@@ -10,9 +11,9 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (authController.firebaseUser.value != null) {
-        Future.microtask(() => Get.offAllNamed("/utama"));
+        Future.microtask(() => Get.offAllNamed(RoutePages.utama));
       } else {
-        Future.microtask(() => Get.offAllNamed("/logintest"));
+        Future.microtask(() => Get.offAllNamed(RoutePages.logintest));
       }
       return const Center(child: CircularProgressIndicator());
     });
