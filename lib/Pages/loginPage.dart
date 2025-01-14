@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (user != null) {
       showToast(message: "User is Successfully Signed In.");
-      Get.toNamed(RoutePages.home);
+      Get.toNamed(RoutePages.taskviewlist);
     } else {
       showToast(message: "Some error occurred.");
     }
@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
         //tes
 
         await _firebaseAuth.signInWithCredential(credential);  // Now using _firebaseAuth
-        Get.toNamed(RoutePages.home);
+        Get.toNamed(RoutePages.taskviewlist);
       }
     } catch (e) {
       showToast(message: "Some error occurred: $e");
