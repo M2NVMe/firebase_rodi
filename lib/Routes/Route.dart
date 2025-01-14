@@ -1,3 +1,4 @@
+import 'package:firebase_rodi/Pages/UtamaPage.dart';
 import 'package:firebase_rodi/Pages/homePage.dart';
 import 'package:firebase_rodi/Pages/loginPage.dart';
 import 'package:firebase_rodi/Pages/registerPage.dart';
@@ -10,6 +11,7 @@ class RoutePages {
   static const login = "/login";
   static const register = "/register";
   static const home = "/home";
+  static const taskviewlist = "/taskview";
 }
 
 class AppPages {
@@ -18,5 +20,6 @@ class AppPages {
     GetPage(name: RoutePages.login, page: () => LoginPage()),
     GetPage(name: RoutePages.register, page: () => RegisterPage()),
     GetPage(name: RoutePages.home, page: () => HomePage()),
+    GetPage(name: RoutePages.taskviewlist, page: () => CrudScreen()),
   ];
 }

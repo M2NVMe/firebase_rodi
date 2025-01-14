@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (user != null) {
       print("User is Successfully Signed In!");
-      Get.toNamed(RoutePages.home);
+      Get.toNamed(RoutePages.taskviewlist);
     } else {
       print("Some Error Occured");
     }

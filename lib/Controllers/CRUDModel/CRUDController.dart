@@ -37,13 +37,14 @@ class Crudcontroller extends GetxController {
 
 
 
-  void addTask(String title, String description) async {
+  void addTask(String title, String description, DateTime duedate) async {
     final user = auth.currentUser;
     if (user != null) {
       try {
         await firestore.collection('tasks').doc(user.uid).collection('userTasks').add({
           'title': title,
           'description': description,
+          'duedate': duedate,
           'completed': false,
           'createdAt': Timestamp.now(),
         });
