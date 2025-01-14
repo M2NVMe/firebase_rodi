@@ -3,6 +3,8 @@ import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../global/common/toast.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -22,10 +24,8 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                FirebaseAuth.instance.signOut();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Signed Out')),
-                );
-                Get.toNamed(RoutePages.login);
+               showToast(message: "Successfully signed out.");
+               Get.toNamed(RoutePages.login);
               },
               child: Text('Sign Out'),
             ),
