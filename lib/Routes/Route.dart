@@ -1,23 +1,22 @@
-import 'package:firebase_rodi/Pages/Login.dart';
-import 'package:firebase_rodi/Pages/TestLogin.dart';
-import 'package:firebase_rodi/Pages/UtamaPage.dart';
+import 'package:firebase_rodi/Pages/homePage.dart';
+import 'package:firebase_rodi/Pages/loginPage.dart';
+import 'package:firebase_rodi/Pages/registerPage.dart';
 import 'package:get/get.dart';
 
 class RoutePages {
   //tambahin initial nama pagesnya
 
-
   //misal =
   static const login = "/login";
-  static const logintest = "/logintest";
-  static const utama  = "/utama";
+  static const register = "/register";
+  static const home = "/home";
 }
 
-class AppPages{
-  static final pages =  [
+class AppPages {
+  static final pages = [
     //tambahin page pagenya disini
     GetPage(name: RoutePages.login, page: () => LoginPage()),
-    GetPage(name: RoutePages.logintest, page: () => Testlogin()),
-    GetPage(name: RoutePages.utama, page: () => CrudScreen()),
+    GetPage(name: RoutePages.register, page: () => RegisterPage()),
+    GetPage(name: RoutePages.home, page: () => HomePage()),
   ];
 }
