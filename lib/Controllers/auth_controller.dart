@@ -15,7 +15,7 @@ class AuthController extends GetxController {
       User? user = await _authService.signUpWithEmailAndPassword(email, password);
       if (user != null) {
         showToast(message: "User is Successfully Created");
-        Get.toNamed(RoutePages.home);
+        Get.toNamed(RoutePages.taskviewlist);
       } else {
         showToast(message: "Some Error Occurred");
       }
@@ -30,7 +30,7 @@ class AuthController extends GetxController {
       User? user = await _authService.signInWithEmailAndPassword(email, password);
       if (user != null) {
         showToast(message: "User is Successfully Signed In.");
-        Get.toNamed(RoutePages.home);
+        Get.toNamed(RoutePages.taskviewlist);
       } else {
         showToast(message: "Some error occurred.");
       }
@@ -55,7 +55,7 @@ class AuthController extends GetxController {
         User? user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
 
         if (user != null) {
-          Get.toNamed(RoutePages.home);
+          Get.toNamed(RoutePages.taskviewlist);
         }
       }
     } catch (e) {
