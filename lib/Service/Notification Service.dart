@@ -18,6 +18,11 @@ class NotificationService {
     // Initialize local notifications
     await _initializeLocalNotifications();
 
+    final fcmtoken = await messaging.getToken();
+
+    print("Token : $fcmtoken");
+
+
     // Set up background message handling
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 

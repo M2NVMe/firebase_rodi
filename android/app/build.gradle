@@ -31,8 +31,8 @@ android {
     buildTypes {
         release {
             // Proper signing configuration for release
-            signingConfig signingConfigs.release
-            minifyEnabled false
+            signingConfig signingConfigs.debug
+            /*minifyEnabled false*/
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -40,17 +40,12 @@ android {
         }
     }
 
-    signingConfigs {
+    /*signingConfigs {
         debug {
             // Automatically uses the debug keystore
         }
-        release {
-            storeFile file("keystore/release.keystore") // Update path to your keystore file
-            storePassword "your-keystore-password" // Replace with your keystore password
-            keyAlias "your-key-alias" // Replace with your key alias
-            keyPassword "your-key-password" // Replace with your key password
-        }
-    }
+
+    }*/
 }
 
 dependencies {
