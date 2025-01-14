@@ -6,7 +6,6 @@ class Crudcontroller extends GetxController {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-
   RxList<Map<String, dynamic>> tasks = <Map<String, dynamic>>[].obs;
 
   @override
@@ -14,7 +13,6 @@ class Crudcontroller extends GetxController {
     super.onInit();
     _loadTasks();
   }
-
 
   void _loadTasks() {
     final user = auth.currentUser;
@@ -35,13 +33,19 @@ class Crudcontroller extends GetxController {
     }
   }
 
-
-
   void addTask(String title, String description, DateTime duedate) async {
     final user = auth.currentUser;
     if (user != null) {
+      if (duedate.isBefore(DateTime.now())) {
+        Get.snackbar('Error', 'Due date cannot be in the past.');
+        return;
+      }
       try {
-        await firestore.collection('tasks').doc(user.uid).collection('userTasks').add({
+        await firestore
+            .collection('tasks')
+            .doc(user.uid)
+            .collection('userTasks')
+            .add({
           'title': title,
           'description': description,
           'duedate': duedate,
@@ -56,7 +60,6 @@ class Crudcontroller extends GetxController {
       Get.snackbar('Error', 'User not authenticated');
     }
   }
-
 
   Future<void> updateTask(String taskId, Map<String, dynamic> updates) async {
     final user = auth.currentUser;
@@ -73,7 +76,6 @@ class Crudcontroller extends GetxController {
     }
   }
 
-
   Future<void> deleteTask(String taskId) async {
     final user = auth.currentUser;
     if (user != null) {
@@ -88,7 +90,6 @@ class Crudcontroller extends GetxController {
       Get.snackbar("Error", "User not logged in!");
     }
   }
-
 
   Future<void> toggleTaskCompletion(String taskId, bool currentStatus) async {
     await updateTask(taskId, {'completed': !currentStatus});

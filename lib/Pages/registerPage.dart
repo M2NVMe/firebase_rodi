@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:firebase_rodi/firebase_auth_implementation/firebase_auth_services.dart';
+import 'package:firebase_rodi/global/common/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +11,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool isSigningUp = false;
+
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   TextEditingController _usernameController = TextEditingController();
@@ -68,21 +71,9 @@ class _RegisterPageState extends State<RegisterPage> {
             ElevatedButton(
               onPressed: () {
                 _signUp();
+                showToast(message: "User is Successfully Created");
               },
-              child: Text('Register'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // Google Sign-In Button (Optional)
-            ElevatedButton.icon(
-              onPressed: () {
-                // Handle Google Sign-Up
-              },
-              icon: Icon(Icons.login),
-              label: Text('Sign up with Google'),
+              child: isSigningUp ? CircularProgressIndicator(color: Colors.white,): Text('Register'),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
               ),
@@ -104,18 +95,28 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _signUp() async {
+    setState(() {
+      isSigningUp = true;
+    });
+
     String username = _usernameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
 
     User? user = await _auth.signUpWithEmailAndPassword(email, password);
 
+    setState(() {
+      isSigningUp = false;
+    });
+
     if (user != null) {
-      print("User is Successfully Created");
+      showToast(message: "User is Successfully Created");
       Get.toNamed(RoutePages.home);
     } else {
-      print("Some Error Occured");
+      showToast(message: "Some Error Occured");
     }
   }
 
 }
+
+//registerPage
