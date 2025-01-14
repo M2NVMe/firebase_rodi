@@ -134,6 +134,7 @@ class _LoginPageState extends State<LoginPage> {
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken,
         );
+        //tes
 
         await _firebaseAuth.signInWithCredential(credential);  // Now using _firebaseAuth
         Get.toNamed(RoutePages.home);
