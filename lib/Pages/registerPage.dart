@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_rodi/controllers/auth_controller.dart';
 import 'package:firebase_rodi/Routes/Route.dart';
-import 'package:firebase_rodi/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:firebase_rodi/global/common/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,13 +9,10 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  bool isSigningUp = false;
-
-  final FirebaseAuthService _auth = FirebaseAuthService();
-
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final AuthController _authController = Get.put(AuthController());
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -38,52 +33,46 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Title
             Text(
               'Create a New Account',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-
-            // Username TextField
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(labelText: 'Username'),
             ),
             SizedBox(height: 10),
-
-            // Email TextField
             TextField(
               controller: _emailController,
               decoration: InputDecoration(labelText: 'Email'),
             ),
             SizedBox(height: 10),
-
-            // Password TextField
             TextField(
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(labelText: 'Password'),
             ),
-
-            SizedBox(height: 10),
-
-            ElevatedButton(
-              onPressed: () {
-                _signUp();
-                showToast(message: "User is Successfully Created");
+            SizedBox(height: 20),
+            Obx(() => ElevatedButton(
+              onPressed: _authController.isSigning.value
+                  ? null
+                  : () {
+                _authController.signUpWithEmailAndPassword(
+                  _emailController.text,
+                  _passwordController.text,
+                );
               },
-              child: isSigningUp ? CircularProgressIndicator(color: Colors.white,): Text('Register'),
+              child: _authController.isSigning.value
+                  ? CircularProgressIndicator(color: Colors.white)
+                  : Text('Register'),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
               ),
-            ),
+            )),
             SizedBox(height: 20),
-
-            // Navigate to Login Page
             TextButton(
               onPressed: () {
-                // Navigate back to LoginPage using GetX
                 Get.back();
               },
               child: Text('Already have an account? Login'),
@@ -93,30 +82,4 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-
-  void _signUp() async {
-    setState(() {
-      isSigningUp = true;
-    });
-
-    String username = _usernameController.text;
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
-
-    setState(() {
-      isSigningUp = false;
-    });
-
-    if (user != null) {
-      showToast(message: "User is Successfully Created");
-      Get.toNamed(RoutePages.home);
-    } else {
-      showToast(message: "Some Error Occured");
-    }
-  }
-
 }
-
-//registerPage
