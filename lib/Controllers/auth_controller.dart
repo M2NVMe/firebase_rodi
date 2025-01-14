@@ -55,7 +55,7 @@ class AuthController extends GetxController {
         User? user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
 
         if (user != null) {
-          Get.toNamed(RoutePages.home);
+          Get.toNamed(RoutePages.taskviewlist);
         }
       }
     } catch (e) {
