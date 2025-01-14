@@ -15,7 +15,7 @@ class AuthController extends GetxController {
       User? user = await _authService.signUpWithEmailAndPassword(email, password);
       if (user != null) {
         showToast(message: "User is Successfully Created");
-        Get.toNamed(RoutePages.home);
+        Get.toNamed(RoutePages.taskviewlist);
       } else {
         showToast(message: "Some Error Occurred");
       }
