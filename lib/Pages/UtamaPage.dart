@@ -1,4 +1,5 @@
 import 'package:firebase_rodi/Controllers/CRUDModel/CRUDController.dart';
+import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +17,7 @@ class CrudScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               crudController.auth.signOut();
-              Get.offAllNamed('/login'); // Navigate back to login
+              Get.offAllNamed(RoutePages.login); // Navigate back to login
             },
             icon: const Icon(Icons.logout),
           ),
