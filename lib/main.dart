@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Firebase Assignment App',
-      initialRoute: RoutePages.logintest,
+      initialRoute: RoutePages.login,
       getPages: AppPages.pages,
       debugShowCheckedModeBanner: false,
     );
