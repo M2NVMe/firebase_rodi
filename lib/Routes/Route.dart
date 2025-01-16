@@ -1,3 +1,4 @@
+import 'package:firebase_rodi/Bindings/CRUDBindings.dart';
 import 'package:firebase_rodi/Pages/Fragments/UtamaPage.dart';
 import 'package:firebase_rodi/Pages/homePage.dart';
 import 'package:firebase_rodi/Pages/loginPage.dart';
@@ -20,6 +21,6 @@ class AppPages {
     GetPage(name: RoutePages.login, page: () => LoginPage()),
     GetPage(name: RoutePages.register, page: () => RegisterPage()),
     GetPage(name: RoutePages.home, page: () => HomePage()),
-    GetPage(name: RoutePages.taskviewlist, page: () => CrudScreen()),
+    GetPage(name: RoutePages.taskviewlist, page: () => CrudScreen(), binding: CrudBinding()),
   ];
 }
