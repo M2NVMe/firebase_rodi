@@ -1,26 +1,33 @@
-import 'package:firebase_rodi/Bindings/CRUDBindings.dart';
-import 'package:firebase_rodi/Pages/Fragments/UtamaPage.dart';
-import 'package:firebase_rodi/Pages/homePage.dart';
-import 'package:firebase_rodi/Pages/loginPage.dart';
-import 'package:firebase_rodi/Pages/registerPage.dart';
 import 'package:get/get.dart';
+import '../Pages/Fragments/CreateTaskPage.dart';
+import '../Pages/Fragments/UtamaPage.dart';
+import '../Pages/homePage.dart';
+import '../Pages/loginPage.dart';
+import '../Pages/registerPage.dart';
+import '../Bindings/CRUDBindings.dart';
 
 class RoutePages {
-  //tambahin initial nama pagesnya
-
-  //misal =
   static const login = "/login";
   static const register = "/register";
   static const home = "/home";
   static const taskviewlist = "/taskview";
+  static const taskcreate = "/taskcreate";
 }
 
 class AppPages {
   static final pages = [
-    //tambahin page pagenya disini
     GetPage(name: RoutePages.login, page: () => LoginPage()),
     GetPage(name: RoutePages.register, page: () => RegisterPage()),
-    GetPage(name: RoutePages.home, page: () => HomePage(), bindings: [CrudBinding(), ]),
-    GetPage(name: RoutePages.taskviewlist, page: () => CrudScreen(), binding: CrudBinding()),
+    GetPage(name: RoutePages.home, page: () => HomePage(), bindings: [
+      CrudBinding(),
+    ]),
+    GetPage(
+        name: RoutePages.taskviewlist,
+        page: () => UtamaPage(),
+        binding: CrudBinding()),
+    GetPage(
+        name: RoutePages.taskcreate,
+        page: () => CreateTaskPage(),
+        binding: CrudBinding()),
   ];
 }
