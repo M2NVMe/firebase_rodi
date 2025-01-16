@@ -1,4 +1,4 @@
-import 'package:firebase_rodi/Pages/UtamaPage.dart';
+import 'package:firebase_rodi/Pages/Fragments/UtamaPage.dart';
 import 'package:firebase_rodi/Pages/homePage.dart';
 import 'package:firebase_rodi/Pages/loginPage.dart';
 import 'package:firebase_rodi/Pages/registerPage.dart';
