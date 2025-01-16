@@ -20,7 +20,7 @@ class AppPages {
     //tambahin page pagenya disini
     GetPage(name: RoutePages.login, page: () => LoginPage()),
     GetPage(name: RoutePages.register, page: () => RegisterPage()),
-    GetPage(name: RoutePages.home, page: () => HomePage()),
+    GetPage(name: RoutePages.home, page: () => HomePage(), bindings: [CrudBinding(), ]),
     GetPage(name: RoutePages.taskviewlist, page: () => CrudScreen(), binding: CrudBinding()),
   ];
 }
