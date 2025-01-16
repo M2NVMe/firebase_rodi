@@ -8,12 +8,16 @@ import 'package:get/get.dart';
 
 class CrudScreen extends StatelessWidget {
   CrudScreen({super.key});
+
+  // Initialize the controller at the class level
+  final Crudcontroller crudController = Get.put(Crudcontroller());
+
   @override
   Widget build(BuildContext context) {
-    Crudcontroller crudController = Get.find();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("User Tasks"),
+        automaticallyImplyLeading: false,
+        title: const Text("To-Do list"),
         actions: [
           IconButton(
             onPressed: () {
@@ -24,24 +28,26 @@ class CrudScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Obx(() {
-        if (crudController.tasks.isEmpty) {
-          return const Center(child: Text("No tasks found."));
-        }
-        return ListView.builder(
-          itemCount: crudController.tasks.length,
-          itemBuilder: (context, index) {
-            final task = crudController.tasks[index];
-            return AdapterNotes(
-              task: task,
-              onPressed: () async {
-                await crudController.deleteTask(task['id']);
-                print("Task deleted successfully!");
+      body: GetX<Crudcontroller>( // Changed from Obx to GetX for better lifecycle management
+          builder: (controller) {
+            if (controller.tasks.isEmpty) {
+              return const Center(child: Text("No tasks found."));
+            }
+            return ListView.builder(
+              itemCount: controller.tasks.length,
+              itemBuilder: (context, index) {
+                final task = controller.tasks[index];
+                return AdapterNotes(
+                  task: task,
+                  onPressed: () async {
+                    await controller.deleteTask(task['id']);
+                    print("Task deleted successfully!");
+                  },
+                );
               },
             );
-          },
-        );
-      }),
+          }
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.defaultDialog(
