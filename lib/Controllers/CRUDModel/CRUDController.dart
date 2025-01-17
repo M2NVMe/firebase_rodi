@@ -33,18 +33,13 @@ class Crudcontroller extends GetxController {
           return {'id': doc.id, ...data};
         }).toList();
       });
-    } else {
-      print("User is null, cannot load tasks.");
     }
   }
 
-  void addTask(String title, String description, DateTime duedate) async {
+  Future<bool> addTask(
+      String title, String description, DateTime duedate) async {
     final user = auth.currentUser;
     if (user != null) {
-      if (duedate.isBefore(DateTime.now())) {
-        Get.snackbar('Error', 'Due date cannot be in the past.');
-        return;
-      }
       try {
         await firestore
             .collection('tasks')
@@ -53,17 +48,16 @@ class Crudcontroller extends GetxController {
             .add({
           'title': title,
           'description': description,
-          'duedate': duedate,
+          'duedate': duedate.toIso8601String(),
           'completed': false,
           'createdAt': Timestamp.now(),
         });
-        Get.snackbar('Success', 'Task added successfully');
+        return true;
       } catch (e) {
-        Get.snackbar('Error', 'Failed to add task: $e');
+        return false;
       }
-    } else {
-      Get.snackbar('Error', 'User not authenticated');
     }
+    return false;
   }
 
   Future<void> updateTask(String taskId, Map<String, dynamic> updates) async {

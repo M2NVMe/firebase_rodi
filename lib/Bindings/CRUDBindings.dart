@@ -1,9 +1,11 @@
-import 'package:firebase_rodi/Controllers/CRUDModel/CRUDController.dart';
 import 'package:get/get.dart';
+import '../Controllers/CRUDModel/CRUDController.dart';
+import '../Controllers/CRUDModel/TaskFormController.dart';
 
 class CrudBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(Crudcontroller());
+    Get.lazyPut(() => Crudcontroller());
+    Get.lazyPut(() => TaskFormController());
   }
 }
