@@ -25,7 +25,12 @@ class Crudcontroller extends GetxController {
           .snapshots()
           .listen((snapshot) {
         tasks.value = snapshot.docs.map((doc) {
-          return {'id': doc.id, ...doc.data() as Map<String, dynamic>};
+          final data = doc.data() as Map<String, dynamic>;
+          // Convert
+          if (data.containsKey('duedate') && data['duedate'] is Timestamp) {
+            data['duedate'] = (data['duedate'] as Timestamp).toDate();
+          }
+          return {'id': doc.id, ...data};
         }).toList();
       });
     } else {
