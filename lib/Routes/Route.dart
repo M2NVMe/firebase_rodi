@@ -23,7 +23,7 @@ class AppPages {
     ]),
     GetPage(
         name: RoutePages.taskviewlist,
-        page: () => UtamaPage(),
+        page: () => CrudScreen(),
         binding: CrudBinding()),
     GetPage(
         name: RoutePages.taskcreate,

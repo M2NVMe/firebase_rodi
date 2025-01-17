@@ -72,18 +72,14 @@ class CrudScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.defaultDialog(
-            title: "Add Task",
-            content: TaskForm(
-              onSubmit: (title, description, time) {
-                crudController.addTask(title, description, time);
-                Get.back();
-              },
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
+          onPressed: () {
+            if (RoutePages.taskcreate != null) {
+              Get.toNamed(RoutePages.taskcreate);
+            } else {
+              print("Route is null.");
+            }
+          },
+          child: const Icon(Icons.add),
       ),
     );
   }
