@@ -60,18 +60,24 @@ class Crudcontroller extends GetxController {
     return false;
   }
 
-  Future<void> updateTask(String taskId, Map<String, dynamic> updates) async {
+  Future<bool> updateTask(String taskId, Map<String, dynamic> updates) async {
     final user = auth.currentUser;
     if (user != null) {
-      await firestore
-          .collection('tasks')
-          .doc(user.uid)
-          .collection('userTasks')
-          .doc(taskId)
-          .update(updates);
-      Get.snackbar("Success", "Task updated successfully!");
+      try {
+        await firestore
+            .collection('tasks')
+            .doc(user.uid)
+            .collection('userTasks')
+            .doc(taskId)
+            .update(updates);
+        return true;
+      } catch (e) {
+        Get.snackbar("Error", "Failed to update task: $e");
+        return false;
+      }
     } else {
       Get.snackbar("Error", "User not logged in!");
+      return false;
     }
   }
 

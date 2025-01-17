@@ -1,3 +1,4 @@
+import 'package:firebase_rodi/Pages/Fragments/EditTaskPage.dart';
 import 'package:get/get.dart';
 import '../Pages/Fragments/CreateTaskPage.dart';
 import '../Pages/Fragments/UtamaPage.dart';
@@ -12,6 +13,7 @@ class RoutePages {
   static const home = "/home";
   static const taskviewlist = "/taskview";
   static const taskcreate = "/taskcreate";
+  static const taskedit = "/taskedit";
 }
 
 class AppPages {
@@ -23,11 +25,15 @@ class AppPages {
     ]),
     GetPage(
         name: RoutePages.taskviewlist,
-        page: () => CrudScreen(),
+        page: () => UtamaPage(),
         binding: CrudBinding()),
     GetPage(
         name: RoutePages.taskcreate,
         page: () => CreateTaskPage(),
+        binding: CrudBinding()),
+    GetPage(
+        name: RoutePages.taskedit,
+        page: () => EditTaskPage(),
         binding: CrudBinding()),
   ];
 }

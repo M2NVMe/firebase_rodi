@@ -1,14 +1,19 @@
 import 'package:firebase_rodi/Controllers/CRUDModel/CRUDController.dart';
+import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart'; // Import the intl package
+import 'package:intl/intl.dart';
 
-void showTaskDetails(BuildContext context, Map<String, dynamic> task, Crudcontroller crudController) {
+import '../Pages/Fragments/EditTaskPage.dart'; // Import the intl package
+
+void showTaskDetails(BuildContext context, Map<String, dynamic> task,
+    Crudcontroller crudController) {
   String formattedDate = "No due date";
 
   // Check if 'duedate' exists and is of type DateTime
   if (task['duedate'] is DateTime) {
-    formattedDate = DateFormat('EEEE, MMM d, yyyy - h:mm a').format(task['duedate']);
+    formattedDate =
+        DateFormat('EEEE, MMM d, yyyy - h:mm a').format(task['duedate']);
   } else if (task['duedate'] is String) {
     try {
       final date = DateTime.parse(task['duedate']);
@@ -63,7 +68,14 @@ void showTaskDetails(BuildContext context, Map<String, dynamic> task, Crudcontro
                 ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pop(context);
-                    Get.to(() => const Placeholder(), arguments: task);
+                    print(
+                        task); // Make sure 'task' is a Map with the correct data
+
+                    // Pass the task to the next page using Get.toNamed
+                    Get.toNamed(
+                      RoutePages.taskedit,
+                      arguments: task, // You can directly pass the task
+                    );
                   },
                   icon: const Icon(Icons.edit),
                   label: const Text("Edit"),

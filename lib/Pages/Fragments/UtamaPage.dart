@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class CrudScreen extends StatelessWidget {
-  CrudScreen({super.key});
+class UtamaPage extends StatelessWidget {
+  UtamaPage({super.key});
   final Crudcontroller crudController = Get.put(Crudcontroller());
 
   @override
@@ -37,7 +37,8 @@ class CrudScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final task = controller.tasks[index];
               final dueDate = task['duedate'] is DateTime
-                  ? DateFormat('EEEE, MMM d, yyyy - h:mm a').format(task['duedate'])
+                  ? DateFormat('EEEE, MMM d, yyyy - h:mm a')
+                      .format(task['duedate'])
                   : "No due date";
               return GestureDetector(
                 onLongPress: () {
@@ -72,14 +73,14 @@ class CrudScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            if (RoutePages.taskcreate != null) {
-              Get.toNamed(RoutePages.taskcreate);
-            } else {
-              print("Route is null.");
-            }
-          },
-          child: const Icon(Icons.add),
+        onPressed: () {
+          if (RoutePages.taskcreate != null) {
+            Get.toNamed(RoutePages.taskcreate);
+          } else {
+            print("Route is null.");
+          }
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
