@@ -72,7 +72,8 @@ class CreateTaskPage extends StatelessWidget {
                       return;
                     }
 
-                    if (taskformcontroller.selectedDateTime.value == null) {
+                    if (taskformcontroller.dueDateController.text.isEmpty ||
+                        taskformcontroller.dueTimeController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content:
@@ -81,8 +82,41 @@ class CreateTaskPage extends StatelessWidget {
                       return;
                     }
 
-                    if (taskformcontroller.selectedDateTime.value!
-                        .isBefore(DateTime.now())) {
+                    // Parse date and time from controllers
+                    DateTime? parsedDate;
+                    try {
+                      parsedDate = DateTime.parse(
+                          taskformcontroller.dueDateController.text);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Invalid date format.")),
+                      );
+                      return;
+                    }
+
+                    List<String> timeParts =
+                        taskformcontroller.dueTimeController.text.split(":");
+                    if (timeParts.length != 2) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Invalid time format.")),
+                      );
+                      return;
+                    }
+
+                    int hour = int.parse(timeParts[0]);
+                    int minute = int.parse(timeParts[1]);
+
+                    // Combine date and time
+                    final combinedDateTime = DateTime(
+                      parsedDate.year,
+                      parsedDate.month,
+                      parsedDate.day,
+                      hour,
+                      minute,
+                    );
+
+                    // Ensure the date is in the future
+                    if (combinedDateTime.isBefore(DateTime.now())) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content: Text("Due date cannot be in the past.")),
@@ -94,7 +128,7 @@ class CreateTaskPage extends StatelessWidget {
                     bool success = await crudcontroller.addTask(
                       taskformcontroller.titleController.text.trim(),
                       taskformcontroller.descriptionController.text.trim(),
-                      taskformcontroller.selectedDateTime.value!,
+                      combinedDateTime,
                     );
 
                     if (success) {

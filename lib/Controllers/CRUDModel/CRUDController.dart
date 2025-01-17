@@ -48,7 +48,7 @@ class Crudcontroller extends GetxController {
             .add({
           'title': title,
           'description': description,
-          'duedate': duedate.toIso8601String(),
+          'duedate': duedate,
           'completed': false,
           'createdAt': Timestamp.now(),
         });

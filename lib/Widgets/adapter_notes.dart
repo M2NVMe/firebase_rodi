@@ -16,10 +16,22 @@ class AdapterNotes extends StatelessWidget {
     final title = task['title'] ?? 'No Title';
     final description = task['description'] ?? 'No Description';
 
-    // Check if 'duedate' is a valid Timestamp and convert it to DateTime
-    final dueDate = task['duedate'] is Timestamp
-        ? (task['duedate'] as Timestamp).toDate()
-        : null;
+    // Debugging: Print task details and raw duedate
+    print('Task details: $task');
+    print('Raw duedate value: ${task['duedate']}');
+
+    // Handle 'duedate' field with different formats
+    DateTime? dueDate;
+
+    if (task['duedate'] is Timestamp) {
+      dueDate = (task['duedate'] as Timestamp).toDate();
+    } else if (task['duedate'] is String) {
+      try {
+        dueDate = DateTime.parse(task['duedate']);
+      } catch (e) {
+        print('Error parsing date string: ${task['duedate']}');
+      }
+    }
 
     final formattedDate = dueDate != null
         ? '${dueDate.year}-${dueDate.month.toString().padLeft(2, '0')}-${dueDate.day.toString().padLeft(2, '0')}'
