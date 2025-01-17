@@ -3,6 +3,7 @@ import 'package:firebase_rodi/Controllers/CRUDModel/CRUDController.dart';
 import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:firebase_rodi/Widgets/TaskFormWidget.dart';
 import 'package:firebase_rodi/Widgets/TaskModal.dart';
+import 'package:firebase_rodi/Widgets/adapter_notes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -36,36 +37,18 @@ class UtamaPage extends StatelessWidget {
             itemCount: controller.tasks.length,
             itemBuilder: (context, index) {
               final task = controller.tasks[index];
-              final dueDate = task['duedate'] is DateTime
-                  ? DateFormat('EEEE, MMM d, yyyy - h:mm a')
-                      .format(task['duedate'])
-                  : "No due date";
               return GestureDetector(
-                onLongPress: () {
+                onTap: () {
                   showTaskDetails(context, task, crudController);
                 },
-                child: Card(
-                  child: ListTile(
-                    title: Text(task['title'] ?? 'Unnamed Task'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(task['description'] ?? 'No description provided.'),
-                        const SizedBox(height: 4),
-                        Text(
-                          "Due: $dueDate",
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () async {
-                        await controller.deleteTask(task['id']);
-                        print("Task deleted successfully!");
-                      },
-                    ),
-                  ),
+                child: AdapterNotes(
+                  task: task,
+                  onToggleCompletion: () async {
+                    await controller.toggleTaskCompletion(
+                      task['id'],
+                      task['completed'] ?? false,
+                    );
+                  },
                 ),
               );
             },

@@ -17,52 +17,105 @@ class EditTaskPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Task"),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: TextField(
+          controller: editTaskController.titleController,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          decoration: const InputDecoration(
+            hintText: "Enter Task Title",
+            hintStyle: TextStyle(color: Colors.black38),
+            border: InputBorder.none,
+          ),
+        ),
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
+      body: Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                controller: editTaskController.titleController,
-                decoration: const InputDecoration(labelText: "Title"),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: editTaskController.descriptionController,
-                decoration: const InputDecoration(labelText: "Description"),
-              ),
-              const SizedBox(height: 16),
-              GestureDetector(
-                onTap: () => editTaskController.pickDate(context),
-                child: AbsorbPointer(
-                  child: TextField(
-                    controller: editTaskController.dueDateController,
-                    decoration: const InputDecoration(
-                      labelText: "Due Date",
-                      hintText: "Pick a date",
-                      suffixIcon: Icon(Icons.calendar_today),
-                    ),
-                  ),
+              const Text(
+                "Description",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
-              const SizedBox(height: 16),
-              GestureDetector(
-                onTap: () => editTaskController.pickTime(context),
-                child: AbsorbPointer(
-                  child: TextField(
-                    controller: editTaskController.dueTimeController,
-                    decoration: const InputDecoration(
-                      labelText: "Due Time",
-                      hintText: "Pick a time",
-                      suffixIcon: Icon(Icons.access_time),
-                    ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(12.0),
+                child: TextField(
+                  controller: editTaskController.descriptionController,
+                  style: const TextStyle(fontSize: 16, color: Colors.black),
+                  decoration: const InputDecoration(
+                    hintText: "Write your task details here...",
+                    hintStyle: TextStyle(color: Colors.black38),
+                    border: InputBorder.none,
                   ),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
                 ),
               ),
-              const SizedBox(height: 24),
+              const Spacer(),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => editTaskController.pickDate(context),
+                      child: AbsorbPointer(
+                        child: TextField(
+                          controller: editTaskController.dueDateController,
+                          decoration: InputDecoration(
+                            labelText: "Due Date",
+                            labelStyle: const TextStyle(color: Colors.black),
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            suffixIcon: const Icon(Icons.calendar_today,
+                                color: Colors.black),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => editTaskController.pickTime(context),
+                      child: AbsorbPointer(
+                        child: TextField(
+                          controller: editTaskController.dueTimeController,
+                          decoration: InputDecoration(
+                            labelText: "Due Time",
+                            labelStyle: const TextStyle(color: Colors.black),
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            suffixIcon: const Icon(Icons.access_time,
+                                color: Colors.black),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
@@ -75,21 +128,44 @@ class EditTaskPage extends StatelessWidget {
                       if (success) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text("Task updated successfully!")),
+                            content: Text("Task updated successfully!"),
+                          ),
                         );
                         Get.back();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content:
-                                  Text("Failed to update task. Try again.")),
+                            content: Text("Failed to update task. Try again."),
+                          ),
                         );
                       }
                     }
                   },
-                  child: const Text("Update Task"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    shadowColor: Colors.grey.shade200,
+                    elevation: 6,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.check, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        "Update Task",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+              const SizedBox(height: 16),
             ],
           ),
         ),

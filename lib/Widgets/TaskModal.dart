@@ -32,18 +32,27 @@ void showTaskDetails(BuildContext context, Map<String, dynamic> task,
           borderRadius: BorderRadius.circular(16),
         ),
         contentPadding: const EdgeInsets.all(16),
+        backgroundColor: Colors.white, // Modern white background
+        elevation: 4, // Subtle shadow for depth
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               task['title'] ?? 'Unnamed Task',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87, // Darker title for contrast
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               task['description'] ?? 'No description provided.',
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black54, // Softer description color
+              ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -62,23 +71,30 @@ void showTaskDetails(BuildContext context, Map<String, dynamic> task,
                   icon: const Icon(Icons.delete),
                   label: const Text("Delete"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
+                    backgroundColor: Colors.red, // Red for delete action
+                    foregroundColor: Colors.white, // Button text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pop(context);
-                    print(
-                        task); // Make sure 'task' is a Map with the correct data
-
-                    // Pass the task to the next page using Get.toNamed
                     Get.toNamed(
                       RoutePages.taskedit,
-                      arguments: task, // You can directly pass the task
+                      arguments: task,
                     );
                   },
                   icon: const Icon(Icons.edit),
                   label: const Text("Edit"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Blue for edit action
+                    foregroundColor: Colors.white, // Button text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -27,7 +27,7 @@ class EditTaskController extends GetxController {
 
   /// Validate the input fields
   bool validateInputs() {
-    if (titleController.text.isEmpty || descriptionController.text.isEmpty) {
+    if (titleController.text.isEmpty) {
       Get.snackbar("Error", "Title and description cannot be empty.");
       return false;
     }
