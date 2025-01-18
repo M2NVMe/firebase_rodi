@@ -25,21 +25,21 @@ class Crudcontroller extends GetxController {
           .snapshots()
           .listen((snapshot) {
         tasks.value = snapshot.docs.map((doc) {
-          return {'id': doc.id, ...doc.data() as Map<String, dynamic>};
+          final data = doc.data() as Map<String, dynamic>;
+          // Convert
+          if (data.containsKey('duedate') && data['duedate'] is Timestamp) {
+            data['duedate'] = (data['duedate'] as Timestamp).toDate();
+          }
+          return {'id': doc.id, ...data};
         }).toList();
       });
-    } else {
-      print("User is null, cannot load tasks.");
     }
   }
 
-  void addTask(String title, String description, DateTime duedate) async {
+  Future<bool> addTask(
+      String title, String description, DateTime duedate) async {
     final user = auth.currentUser;
     if (user != null) {
-      if (duedate.isBefore(DateTime.now())) {
-        Get.snackbar('Error', 'Due date cannot be in the past.');
-        return;
-      }
       try {
         await firestore
             .collection('tasks')
@@ -52,27 +52,32 @@ class Crudcontroller extends GetxController {
           'completed': false,
           'createdAt': Timestamp.now(),
         });
-        Get.snackbar('Success', 'Task added successfully');
+        return true;
       } catch (e) {
-        Get.snackbar('Error', 'Failed to add task: $e');
+        return false;
       }
-    } else {
-      Get.snackbar('Error', 'User not authenticated');
     }
+    return false;
   }
 
-  Future<void> updateTask(String taskId, Map<String, dynamic> updates) async {
+  Future<bool> updateTask(String taskId, Map<String, dynamic> updates) async {
     final user = auth.currentUser;
     if (user != null) {
-      await firestore
-          .collection('tasks')
-          .doc(user.uid)
-          .collection('userTasks')
-          .doc(taskId)
-          .update(updates);
-      Get.snackbar("Success", "Task updated successfully!");
+      try {
+        await firestore
+            .collection('tasks')
+            .doc(user.uid)
+            .collection('userTasks')
+            .doc(taskId)
+            .update(updates);
+        return true;
+      } catch (e) {
+        Get.snackbar("Error", "Failed to update task: $e");
+        return false;
+      }
     } else {
       Get.snackbar("Error", "User not logged in!");
+      return false;
     }
   }
 

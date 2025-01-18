@@ -41,8 +41,7 @@ dependencies:
   firebase_auth: ^5.4.0
   fluttertoast: ^8.2.10
   google_sign_in: ^6.2.2
-  firebase_messaging: ^15.2.0
-  flutter_local_notifications: ^18.0.1
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:

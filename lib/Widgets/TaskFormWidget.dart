@@ -1,69 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_rodi/Controllers/CRUDModel/CRUDController.dart';
-import 'package:firebase_rodi/Routes/Route.dart';
-import 'package:firebase_rodi/Widgets/adapter_notes.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_rodi/Controllers/CRUDModel/TaskFormController.dart';
 import 'package:get/get.dart';
-
-class CrudScreen extends StatelessWidget {
-  final Crudcontroller crudController = Get.put(Crudcontroller());
-
-  CrudScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("User Tasks"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              Get.offAllNamed(RoutePages.login); // Navigate back to login
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
-      body: Obx(() {
-        if (crudController.tasks.isEmpty) {
-          return const Center(child: Text("No tasks found."));
-        }
-        return ListView.builder(
-          itemCount: crudController.tasks.length,
-          itemBuilder: (context, index) {
-            final task = crudController.tasks[index];
-            return AdapterNotes(
-              task: task,
-              onPressed: () async {
-                await crudController.deleteTask(task['id']);
-                print("Task deleted successfully!");
-              },
-            );
-          },
-        );
-      }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.defaultDialog(
-            title: "Add Task",
-            content: TaskForm(
-              onSubmit: (title, description, time) {
-                crudController.addTask(title, description, time);
-                Get.back();
-              },
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
+import 'package:flutter/material.dart';
 
 class TaskForm extends StatefulWidget {
   final Function(String title, String description, DateTime dueDateTime)
-      onSubmit;
+  onSubmit;
 
   const TaskForm({required this.onSubmit, super.key});
 
@@ -101,7 +42,7 @@ class _TaskFormState extends State<TaskForm> {
 
       // Update the Due Date TextField
       dueDateController.text =
-          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+      "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
       setState(() {});
     }
   }
@@ -124,7 +65,7 @@ class _TaskFormState extends State<TaskForm> {
 
       // Update the Due Time TextField
       dueTimeController.text =
-          "${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}";
+      "${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}";
       setState(() {});
     }
   }
