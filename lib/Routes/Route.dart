@@ -1,3 +1,4 @@
+import 'package:firebase_rodi/Pages/Fragments/CompletedTask.dart';
 import 'package:firebase_rodi/Pages/Fragments/EditTaskPage.dart';
 import 'package:get/get.dart';
 import '../Pages/Fragments/CreateTaskPage.dart';
@@ -14,6 +15,7 @@ class RoutePages {
   static const taskviewlist = "/taskview";
   static const taskcreate = "/taskcreate";
   static const taskedit = "/taskedit";
+  static const completedtask = "/completedtasks";
 }
 
 class AppPages {
@@ -34,6 +36,10 @@ class AppPages {
     GetPage(
         name: RoutePages.taskedit,
         page: () => EditTaskPage(),
+        binding: CrudBinding()),
+    GetPage(
+        name: RoutePages.completedtask,
+        page: () => CompletedtaskPage(),
         binding: CrudBinding()),
   ];
 }
