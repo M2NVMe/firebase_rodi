@@ -24,9 +24,9 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               // Drawer Header with placeholder text
               DrawerHeader(
-                child: Text('Welcome, user!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                child: Text('Welcome', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.black,
                 ),
               ),
               // ListTile 1
