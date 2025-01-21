@@ -30,13 +30,16 @@ class UtamaPage extends StatelessWidget {
       ),
       body: GetX<Crudcontroller>(
         builder: (controller) {
-          if (controller.tasks.isEmpty) {
+          // Filter for uncompleted tasks
+          final uncompletedTasks = controller.tasks.where((task) => task['completed'] != true).toList();
+
+          if (uncompletedTasks.isEmpty) {
             return const Center(child: Text("No tasks found."));
           }
           return ListView.builder(
-            itemCount: controller.tasks.length,
+            itemCount: uncompletedTasks.length,
             itemBuilder: (context, index) {
-              final task = controller.tasks[index];
+              final task = uncompletedTasks[index];
               return GestureDetector(
                 onTap: () {
                   showTaskDetails(context, task, crudController);
