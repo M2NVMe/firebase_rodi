@@ -1,4 +1,4 @@
-import 'package:firebase_rodi/controllers/auth_controller.dart';
+import 'package:firebase_rodi/Controllers/auth_controller.dart';
 import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

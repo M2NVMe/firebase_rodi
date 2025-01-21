@@ -1,7 +1,8 @@
-import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
+import 'package:firebase_rodi/Routes/Route.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,8 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Firebase Assignment App',
-      initialRoute: RoutePages.login,
+      initialRoute: RoutePages.splash,
       getPages: AppPages.pages,
+      theme: ThemeData(
+        textTheme: GoogleFonts.interTextTheme(),
+      ),
     );
   }
 }
