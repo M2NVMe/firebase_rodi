@@ -57,15 +57,28 @@ class EditTaskController extends GetxController {
 
   /// Pick a date
   void pickDate(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    final DateTime initialDate =
+        selectedDateTime.value != null && selectedDateTime.value!.isAfter(now)
+            ? selectedDateTime.value!
+            : now;
+
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: selectedDateTime.value ?? DateTime.now(),
-      firstDate: DateTime.now(),
+      initialDate: initialDate,
+      firstDate: now,
       lastDate: DateTime(2101),
     );
 
     if (pickedDate != null) {
-      selectedDateTime.value = pickedDate;
+      selectedDateTime.value = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+        selectedDateTime.value?.hour ?? 0,
+        selectedDateTime.value?.minute ?? 0,
+      );
+
       dueDateController.text =
           "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
     }
