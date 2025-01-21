@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,8 +10,18 @@ class Profilepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Profile Page'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Get.offAllNamed(RoutePages.login);
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: Center(
         child: user != null

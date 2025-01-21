@@ -18,15 +18,6 @@ class UtamaPage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text("To-Do list"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              Get.offAllNamed(RoutePages.login);
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
       ),
       body: GetX<Crudcontroller>(
         builder: (controller) {
