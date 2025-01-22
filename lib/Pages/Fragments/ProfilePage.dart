@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_rodi/Routes/Route.dart';
+import 'package:firebase_rodi/Controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Profilepage extends StatelessWidget {
   final User? user = FirebaseAuth.instance.currentUser;
+  final AuthController _authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +17,7 @@ class Profilepage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              FirebaseAuth.instance.signOut();
-              Get.offAllNamed(RoutePages.login);
+              _authController.signOut();
             },
             icon: const Icon(Icons.logout),
           ),

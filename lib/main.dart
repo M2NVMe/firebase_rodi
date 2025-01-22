@@ -1,3 +1,4 @@
+import 'package:firebase_rodi/Controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,12 @@ class MyApp extends StatelessWidget {
       initialRoute: RoutePages.splash,
       getPages: AppPages.pages,
       theme: ThemeData(
-        textTheme: GoogleFonts.interTextTheme(),
+        textTheme: GoogleFonts.interTextTheme(),  // Primary color for app
+        primaryColor: Color(0xff313131),  // Background color for the app
+        appBarTheme: AppBarTheme(
+          color: Colors.white,  // App bar color
+        ), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey).copyWith(background: Colors.white),
+
       ),
     );
   }

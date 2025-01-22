@@ -4,15 +4,37 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../firebase_auth_implementation/firebase_auth_services.dart';
 import '../global/common/toast.dart';
 import '../Routes/Route.dart';
+import 'package:flutter/material.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuthService _authService = FirebaseAuthService();
-  final RxBool isSigning = false.obs;
 
-  Future<void> signUpWithEmailAndPassword(String email, String password) async {
+  // Reactive state variables
+  final RxBool isSigning = false.obs;
+  final RxBool isPasswordVisible = false.obs;
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  }
+
+  @override
+  void onClose() {
+    // Dispose controllers when the controller is destroyed
+    usernameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.onClose();
+  }
+
+  Future<void> signUpWithEmailAndPassword() async {
     isSigning.value = true;
     try {
-      // Make sure to validate the email and password before sending them to Firebase
+      String email = emailController.text.trim();
+      String password = passwordController.text;
+
       if (email.isEmpty || password.isEmpty) {
         showToast(message: "Email or Password cannot be empty");
         return;
@@ -27,32 +49,18 @@ class AuthController extends GetxController {
         showToast(message: "Some Error Occurred");
       }
     } catch (e) {
-      // Catch FirebaseAuthException to handle specific errors
-      if (e is FirebaseAuthException) {
-        switch (e.code) {
-          case 'email-already-in-use':
-            showToast(message: "The email address is already in use.");
-            break;
-          case 'weak-password':
-            showToast(message: "The password is too weak.");
-            break;
-          case 'invalid-email':
-            showToast(message: "The email address is invalid.");
-            break;
-          default:
-            showToast(message: "Error: ${e.message}");
-        }
-      } else {
-        showToast(message: "Some error occurred: $e");
-      }
+      handleAuthError(e);
     } finally {
       isSigning.value = false;
     }
   }
 
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
+  Future<void> signInWithEmailAndPassword() async {
     isSigning.value = true;
     try {
+      String email = emailController.text.trim();
+      String password = passwordController.text;
+
       if (email.isEmpty || password.isEmpty) {
         showToast(message: "Email or Password cannot be empty");
         return;
@@ -67,24 +75,7 @@ class AuthController extends GetxController {
         showToast(message: "Some error occurred.");
       }
     } catch (e) {
-      // Catch FirebaseAuthException to handle specific errors
-      if (e is FirebaseAuthException) {
-        switch (e.code) {
-          case 'user-not-found':
-            showToast(message: "No user found for that email.");
-            break;
-          case 'wrong-password':
-            showToast(message: "Incorrect password.");
-            break;
-          case 'invalid-email':
-            showToast(message: "The email address is invalid.");
-            break;
-          default:
-            showToast(message: "Error: ${e.message}");
-        }
-      } else {
-        showToast(message: "Some error occurred: $e");
-      }
+      handleAuthError(e);
     } finally {
       isSigning.value = false;
     }
@@ -114,6 +105,45 @@ class AuthController extends GetxController {
       showToast(message: "Some error occurred: $e");
     } finally {
       isSigning.value = false;
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      Get.delete<AuthController>();
+
+      // Sign out from Firebase
+      await FirebaseAuth.instance.signOut();
+
+      // Sign out from Google (if the user was logged in with Google)
+      await GoogleSignIn().signOut();
+
+      // After sign out, navigate to the login page
+      Get.offAllNamed(RoutePages.login);
+    } catch (e) {
+      // Handle errors during sign out if necessary
+      showToast(message: "Error signing out: $e");
+    }
+  }
+
+
+  void handleAuthError(dynamic e) {
+    if (e is FirebaseAuthException) {
+      switch (e.code) {
+        case 'user-not-found':
+          showToast(message: "No user found for that email.");
+          break;
+        case 'wrong-password':
+          showToast(message: "Incorrect password.");
+          break;
+        case 'invalid-email':
+          showToast(message: "The email address is invalid.");
+          break;
+        default:
+          showToast(message: "Error: ${e.message}");
+      }
+    } else {
+      showToast(message: "Some error occurred: $e");
     }
   }
 }

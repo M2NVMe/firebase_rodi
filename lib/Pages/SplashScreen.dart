@@ -3,21 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_rodi/Routes/Route.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _checkUserLoginStatus();
-  }
-
-  Future<void> _checkUserLoginStatus() async {
+  Future<void> _checkUserLoginStatus(BuildContext context) async {
     await Future.delayed(Duration(seconds: 2));
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -30,10 +19,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Triggering user login status check on widget build.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkUserLoginStatus(context);
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Image.asset('lib/assets/images/logo.png', height: 150, width: 150,),
+        child: Image.asset(
+          'lib/assets/images/logo.png',
+          height: 150,
+          width: 150,
+        ),
       ),
     );
   }

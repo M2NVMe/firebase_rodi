@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final double textSize;
+  final FontWeight fontWeight; // Added for custom font weight
   final ButtonType buttonType;
   final double borderWidth;
   final Color borderColor;
@@ -24,6 +25,7 @@ class CustomButton extends StatelessWidget {
     required this.backgroundColor,
     required this.textColor,
     required this.textSize,
+    this.fontWeight = FontWeight.normal, // Default font weight
     required this.buttonType,
     required this.borderWidth,
     required this.borderColor,
@@ -41,14 +43,20 @@ class CustomButton extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      textStyle: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold),
+      textStyle: GoogleFonts.inter(
+        fontSize: textSize,
+        fontWeight: fontWeight, // Use the custom font weight
+      ),
     )
         : OutlinedButton.styleFrom(
       side: BorderSide(width: borderWidth, color: borderColor),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      textStyle: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold),
+      textStyle: GoogleFonts.inter(
+        fontSize: textSize,
+        fontWeight: fontWeight, // Use the custom font weight
+      ),
     );
 
     final Widget buttonChild = Row(
@@ -60,14 +68,18 @@ class CustomButton extends StatelessWidget {
         ],
         Text(
           text,
-          style: TextStyle(color: textColor, fontSize: textSize, fontWeight: FontWeight.bold),
+          style: GoogleFonts.inter(
+            color: textColor,
+            fontSize: textSize,
+            fontWeight: fontWeight, // Use the custom font weight
+          ),
         ),
       ],
     );
 
     return SizedBox(
-      width: buttonWidth,  // Use SizedBox to apply custom width
-      height: buttonHeight,  // Use SizedBox to apply custom height
+      width: buttonWidth, // Use SizedBox to apply custom width
+      height: buttonHeight, // Use SizedBox to apply custom height
       child: buttonType == ButtonType.elevated
           ? ElevatedButton(
         style: buttonStyle,

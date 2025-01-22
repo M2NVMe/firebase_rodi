@@ -99,7 +99,7 @@ void showTaskDetails(
 
                 // Content section with new header styling
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
