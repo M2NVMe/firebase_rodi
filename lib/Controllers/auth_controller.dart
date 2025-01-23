@@ -20,15 +20,6 @@ class AuthController extends GetxController {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
-  @override
-  void onClose() {
-    // Dispose controllers when the controller is destroyed
-    usernameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    super.onClose();
-  }
-
   Future<void> signUpWithEmailAndPassword() async {
     isSigning.value = true;
     try {
@@ -44,6 +35,10 @@ class AuthController extends GetxController {
 
       if (user != null) {
         showToast(message: "User is Successfully Created");
+
+        // After successful sign-up, you can dispose of the controllers if you want
+        // (not necessary to do here if you're navigating away and it's handled in onClose)
+        // Get.delete<AuthController>();  // If you no longer need the controller
         Get.offNamed(RoutePages.home);
       } else {
         showToast(message: "Some Error Occurred");
@@ -54,6 +49,7 @@ class AuthController extends GetxController {
       isSigning.value = false;
     }
   }
+
 
   Future<void> signInWithEmailAndPassword() async {
     isSigning.value = true;
@@ -70,6 +66,10 @@ class AuthController extends GetxController {
 
       if (user != null) {
         showToast(message: "User is Successfully Signed In.");
+
+        // After successful sign-in, you can dispose of the controllers if you want
+        // (not necessary to do here if you're navigating away and it's handled in onClose)
+        Get.delete<AuthController>();  // If you no longer need the controller
         Get.offNamed(RoutePages.home);
       } else {
         showToast(message: "Some error occurred.");
@@ -80,6 +80,7 @@ class AuthController extends GetxController {
       isSigning.value = false;
     }
   }
+
 
   Future<void> signInWithGoogle() async {
     isSigning.value = true;
@@ -98,6 +99,7 @@ class AuthController extends GetxController {
         User? user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
 
         if (user != null) {
+          // Get.delete<AuthController>();
           Get.offNamed(RoutePages.home);
         }
       }
@@ -110,8 +112,6 @@ class AuthController extends GetxController {
 
   Future<void> signOut() async {
     try {
-      Get.delete<AuthController>();
-
       // Sign out from Firebase
       await FirebaseAuth.instance.signOut();
 
@@ -146,4 +146,15 @@ class AuthController extends GetxController {
       showToast(message: "Some error occurred: $e");
     }
   }
+
+  // @override
+  // void onClose() {
+  //   // Dispose controllers when the controller is destroyed
+  //   usernameController.dispose();
+  //   emailController.dispose();
+  //   passwordController.dispose();
+  //   super.onClose();
+  // }
 }
+
+
