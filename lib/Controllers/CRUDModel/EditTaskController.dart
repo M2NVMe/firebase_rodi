@@ -42,7 +42,6 @@ class EditTaskController extends GetxController {
       Get.snackbar("Error", "Due date cannot be in the past.");
       return false;
     }
-
     return true;
   }
 
