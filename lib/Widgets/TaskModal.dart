@@ -3,21 +3,20 @@ import 'package:firebase_rodi/Routes/Route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts package
 
-import '../Pages/Fragments/EditTaskPage.dart'; // Import the intl package
-
-void showTaskDetails(BuildContext context, Map<String, dynamic> task,
-    Crudcontroller crudController) {
+void showTaskDetails(
+    BuildContext context, Map<String, dynamic> task, Crudcontroller crudController) {
   String formattedDate = "No due date";
 
   // Check if 'duedate' exists and is of type DateTime
   if (task['duedate'] is DateTime) {
     formattedDate =
-        DateFormat('EEEE, MMM d, yyyy - h:mm a').format(task['duedate']);
+        DateFormat('EEE, dd MMM - hh:mm a').format(task['duedate']);
   } else if (task['duedate'] is String) {
     try {
       final date = DateTime.parse(task['duedate']);
-      formattedDate = DateFormat('EEEE, MMM d, yyyy - h:mm a').format(date);
+      formattedDate = DateFormat('EEE, dd MMM - hh:mm a').format(date);
     } catch (_) {
       formattedDate = "Invalid due date";
     }
@@ -27,75 +26,141 @@ void showTaskDetails(BuildContext context, Map<String, dynamic> task,
     context: context,
     barrierDismissible: true,
     builder: (BuildContext context) {
-      return AlertDialog(
+      return Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        contentPadding: const EdgeInsets.all(16),
-        backgroundColor: Colors.white, // Modern white background
-        elevation: 4, // Subtle shadow for depth
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        elevation: 4,
+        backgroundColor: Colors.white,
+        child: Stack(
           children: [
-            Text(
-              task['title'] ?? 'Unnamed Task',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87, // Darker title for contrast
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              task['description'] ?? 'No description provided.',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black54, // Softer description color
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "Due: $formattedDate",
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    crudController.deleteTask(task['id']);
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.delete),
-                  label: const Text("Delete"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red, // Red for delete action
-                    foregroundColor: Colors.white, // Button text color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                // Header section with buttons
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
                     ),
                   ),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Get.toNamed(
-                      RoutePages.taskedit,
-                      arguments: task,
-                    );
-                  },
-                  icon: const Icon(Icons.edit),
-                  label: const Text("Edit"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue, // Blue for edit action
-                    foregroundColor: Colors.white, // Button text color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Image.asset(
+                          'lib/assets/images/back.png',
+                          height: 24,
+                          width: 24,
+                        ),
+                        tooltip: 'Back',
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Get.toNamed(
+                                RoutePages.taskedit,
+                                arguments: task,
+                              );
+                            },
+                            icon: Image.asset(
+                              'lib/assets/images/edit.png',
+                              height: 24,
+                              width: 24,
+                            ),
+                            tooltip: 'Edit',
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              crudController.deleteTask(task['id']);
+                              Navigator.pop(context);
+                            },
+                            icon: Image.asset(
+                              'lib/assets/images/delete.png',
+                              height: 24,
+                              width: 24,
+                            ),
+                            tooltip: 'Delete',
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
+
+                // Content section with new header styling
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Task Section
+                      Text(
+                        'Task',
+                        style: GoogleFonts.inter( // Apply Inter font
+                          fontSize: 20,
+                          color: const Color(0xFF9A9A9A),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        task['title'] ?? 'Unnamed Task',
+                        style: GoogleFonts.inter( // Apply Inter font
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF313131),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Details Section
+                      Text(
+                        'Details',
+                        style: GoogleFonts.inter( // Apply Inter font
+                          fontSize: 20,
+                          color: const Color(0xFF9A9A9A),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        task['description'] ?? 'No description provided.',
+                        style: GoogleFonts.inter( // Apply Inter font
+                          fontSize: 16,
+                          color: const Color(0xFF313131),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Deadline Section
+                      Text(
+                        'Deadline',
+                        style: GoogleFonts.inter( // Apply Inter font
+                          fontSize: 20,
+                          color: const Color(0xFF9A9A9A),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        formattedDate,
+                        style: GoogleFonts.inter( // Apply Inter font
+                          fontSize: 16,
+                          color: const Color(0xFF313131),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Spacer to push the content down
+                const SizedBox(height: 20),
               ],
             ),
           ],
