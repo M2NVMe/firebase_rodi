@@ -16,19 +16,24 @@ class CreateTaskPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          "Add a new task",
-          style: GoogleFonts.inter(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () => Get.back(),
+            ),
+            Text(
+              'Add a new task',
+              style: GoogleFonts.inter(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff313131),
+              ),
+            ),
+          ],
         ),
       ),
       body: SingleChildScrollView(
@@ -36,57 +41,44 @@ class CreateTaskPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Task name",
-              style: GoogleFonts.inter(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
+            const SizedBox(height: 8),
+            _buildHeader("Task name"),
+            const SizedBox(height: 4),
             CustomTextField(
               hintText: "Task...",
               onChanged: (value) {
                 taskFormController.titleController.text = value;
               },
               controller: taskFormController.titleController,
-              borderColor: Colors.grey,
-              textColor: Colors.black,
+              borderColor: Color(0xff9A9A9A),
+              textColor: Color(0xff313131),
               maxLines: 1,
+              borderRadius: 14,
+              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             ),
-            const SizedBox(height: 16),
-            Text(
-              "Task Details",
-              style: GoogleFonts.inter(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
+            const SizedBox(height: 32),
+
+            _buildHeader("Task Details"),
+            const SizedBox(height: 4),
             CustomTextField(
               hintText: "Details...",
-              textAlignVertical: TextAlignVertical.top, // Align text to the top
+              textAlignVertical: TextAlignVertical.top,
               onChanged: (value) {
                 taskFormController.descriptionController.text = value;
               },
               controller: taskFormController.descriptionController,
-              borderColor: Colors.grey,
-              textColor: Colors.black,
-              keyboardType: TextInputType.multiline,// Fixed height
-              minLines: 8, // Fixed number of lines based on height
-              maxLines: 8, // Same as minLines for fixed height
-              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15), // Adjust padding
+              borderColor: Color(0xff9A9A9A),
+              textColor: Color(0xff313131),
+              keyboardType: TextInputType.multiline,
+              minLines: 7,
+              maxLines: 7,
+              borderRadius: 14,
+              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             ),
-            const SizedBox(height: 16),
-            Text(
-              "Deadline",
-              style: GoogleFonts.inter(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 32),
+
+            _buildHeader("Deadline"),
+            const SizedBox(height: 4),
             Row(
               children: [
                 Expanded(
@@ -94,45 +86,82 @@ class CreateTaskPage extends StatelessWidget {
                     hintText: "Due Date",
                     onChanged: (value) {},
                     controller: taskFormController.dueDateController,
-                    borderColor: Colors.grey,
-                    textColor: Colors.black,
-                    suffixIcon: Image.asset('lib/assets/images/date.png'),
+                    borderColor: Color(0xff9A9A9A),
+                    textColor: Color(0xff313131),
+                    borderRadius: 14,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    prefixIcon: Transform.scale(
+                      scale: 0.55,
+                      child: Image.asset(
+                        'lib/assets/images/date.png',
+                        height: 40,
+                        width: 40,
+                      ),
+                    ),
                     readOnly: true,
                     onTap: () => taskFormController.pickDate(context),
                   ),
                 ),
-                const SizedBox(width: 5),
                 Expanded(
                   child: CustomTextField(
                     hintText: "Due Time",
                     onChanged: (value) {},
                     controller: taskFormController.dueTimeController,
-                    borderColor: Colors.grey,
-                    textColor: Colors.black,
-                    suffixIcon: Image.asset('lib/assets/images/time.png', height: 50, width: 50,),
+                    borderColor: Color(0xff9A9A9A),
+                    textColor: Color(0xff313131),
+                    borderRadius: 14,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    prefixIcon: Transform.scale(
+                      scale: 0.53,
+                      child: Image.asset(
+                        'lib/assets/images/time.png',
+                        height: 40,
+                        width: 40,
+                      ),
+                    ),
                     readOnly: true,
                     onTap: () => taskFormController.pickTime(context),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 84),
+
             Center(
               child: CustomButton(
                 text: "Add Task",
-                backgroundColor: Colors.black,
+                backgroundColor: Color(0xff313131),
                 textColor: Colors.white,
                 textSize: 16,
+                fontWeight: FontWeight.w600,
                 buttonType: ButtonType.elevated,
                 borderWidth: 0,
                 borderColor: Colors.transparent,
-                buttonWidth: double.infinity,
+                buttonWidth: 375,
                 buttonHeight: 50,
-                borderRadius: 30,
+                borderRadius: 14,
                 onPressed: taskFormController.submitTask,
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Helper function to build the headers with consistent alignment
+  Widget _buildHeader(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: GoogleFonts.inter(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff4D4D4D), // You can change the color if needed
+          ),
         ),
       ),
     );
