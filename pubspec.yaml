@@ -81,6 +81,7 @@ flutter:
   - lib/assets/images/google.png
   - lib/assets/images/date.png
   - lib/assets/images/time.png
+  - lib/assets/images/no_task.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
