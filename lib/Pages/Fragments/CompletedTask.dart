@@ -56,7 +56,39 @@ class CompletedtaskPage extends StatelessWidget {
           controller.tasks.where((task) => task['completed'] == true).toList();
 
           if (completedTasks.isEmpty) {
-            return const Center(child: Text("No completed tasks found."));
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 80),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'lib/assets/images/no_task.jpg',
+                      height: 300,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "Just do it!",
+                      style: GoogleFonts.inter(
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      "Let's go! you can complete your task!",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
 
           return ListView.builder(
