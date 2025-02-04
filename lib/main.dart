@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Firebase Assignment App',
+      debugShowCheckedModeBanner: false,
       initialRoute: RoutePages.splash,
       getPages: AppPages.pages,
       theme: ThemeData(
